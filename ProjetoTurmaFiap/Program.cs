@@ -12,14 +12,26 @@ namespace ProjetoTurmaFiap
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<Projeto.Data.Contexto.TreinamentoContext>();
+
+            builder.Services.AddScoped<
+                Projeto.Data.Interfaces.ITurmaRepositorio,
+                Projeto.Data.Repositorio.TurmaRepositorio>();
+
+            builder.Services.AddScoped<
+                Projeto.Data.Interfaces.IAlunoRepositorio,
+                Projeto.Data.Repositorio.AlunoRepositorio>();
+
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MinhaRegraCors",
-                policy =>
-                {
-                    policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
-                });
+                    policy =>
+                    {
+                        policy.AllowAnyHeader()
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod();
 
+                    });
             });
 
             var app = builder.Build();

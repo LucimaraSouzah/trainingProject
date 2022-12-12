@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Projeto.Data.Dto;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text;
 
 namespace ProjetoTurmaFiap.Controllers
 {
@@ -7,73 +12,72 @@ namespace ProjetoTurmaFiap.Controllers
     [ApiController]
     public class TurmaController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly Projeto.Data.Interfaces.ITurmaRepositorio _turmaRepositorio;
 
-        public TurmaController(IConfiguration configuration)
+        public TurmaController(
+            Projeto.Data.Interfaces.ITurmaRepositorio turmaRepositorio)
         {
-            _configuration = configuration;
+            _turmaRepositorio = turmaRepositorio;
         }
 
         [HttpGet]
-        [Route("/ListarTodos")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Entidade.AlunoEntidade))]
+        [Route("/ListarTodas")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Projeto.Data.Dto.TurmaDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult ListarTodos()
         {
             try
             {
-                return Ok(new Entidade.AlunoEntidade());
-
+                return Ok(_turmaRepositorio.ListarTodas());
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpGet]
-        [Route("/ListarPorId")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Entidade.AlunoEntidade))]
+        [Route("/PorId")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Projeto.Data.Dto.TurmaDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult ListarPorId(int id)
+        public IActionResult PorId(int id)
         {
             try
             {
-                return Ok(new Entidade.AlunoEntidade());
-
+                return Ok(_turmaRepositorio.PorId(id));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
-
         }
 
         [HttpPost]
-        [Route("/CadastrarAluno")]
+        [Route("/Cadastrar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public int CadastrarAluno(Entidade.AlunoEntidade aluno)
+        public IActionResult Cadastrar(AlunoCadastrarDto cadastrarDto)
         {
-            return 0;
-        }
-
-        [HttpDelete]
-        [Route("/Deletar")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public int Deletar(Entidade.AlunoEntidade aluno)
-        {
-            return 0;
+            return BadRequest();
         }
 
         [HttpPatch]
+        [Route("/Atualizar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Route("/Atualizar")]
-        public int Atualizar(Entidade.AlunoEntidade aluno)
+        public IActionResult Atualizar(AlunoCadastrarDto cadastrarDto)
         {
-            return 0;
+            return BadRequest();
         }
+
+        [HttpDelete]
+        [Route("/Excluir")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Excluir(int id)
+        {
+            return BadRequest();
+        }
+
     }
 }
