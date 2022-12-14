@@ -190,7 +190,7 @@ namespace ProjetoTurmaFiap.Controllers
         }
 
         [HttpPatch]
-        [Route("/AtualizarAluno")]
+        [Route("/Atualizar")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Atualizar(Projeto.Data.Entidades.Aluno aluno)

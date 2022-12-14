@@ -28,7 +28,19 @@ namespace ProjetoTurmaFiap.Controllers
         {
             try
             {
-                return Ok(_turmaRepositorio.ListarTodas());
+                List<TurmaDto> resultado = _turmaRepositorio.ListarTodas();
+
+                if(resultado == null)
+                {
+                    return NoContent();
+                }
+
+                if (resultado.Count == 0)
+                {
+                    throw new Exception("Sem elementos");
+                }
+
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -73,10 +85,10 @@ namespace ProjetoTurmaFiap.Controllers
         }
 
         [HttpPatch]
-        [Route("/Atualizar")]
+        [Route("/AtualizarTurma")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult Atualizar(AlunoCadastrarDto cadastrarDto)
+        public IActionResult AtualizarTurma(AlunoCadastrarDto cadastrarDto)
         {
             if (cadastrarDto == null || cadastrarDto.Id < 1)
                 return NoContent();
